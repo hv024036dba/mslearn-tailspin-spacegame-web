@@ -3,8 +3,8 @@ trigger:
 
 pool:
   vmImage: 'ubuntu-18.04'
-  demand:
-  - npm
+  demands:
+    - npm
 
 variables:
   buildConfiguration: 'Release'
@@ -15,8 +15,7 @@ steps:
 - task: UseDotNet@2
   displayName: 'Use .NET Core SDK $(dotnetSdkVersion)'
   inputs:
-    packageType: sdk
-    version: $(dotnetSdkVersion)
+    version: '$(dotnetSdkVersion)'
 
 - task: Npm@1
   displayName: 'Run npm install'
@@ -34,37 +33,27 @@ steps:
   workingDirectory: $(wwwrootDir)
 
 - task: DotNetCoreCLI@2
-  displayName: 'Restore project dependecies'
+  displayName: 'Restore project dependencies'
   inputs:
     command: 'restore'
     projects: '**/*.csproj'
 
-# - task: DotNetCOreCLI@2
-#   displayName: 'Build the project - $(buildConfiguration)'
-#   inputs:
-#     command: 'build'
-#     arguments: '--no-restore --configuration $(buildConfiguration)'
-#     projects: '**/*.csproj'
-#
-# - task: DotNetCoreCLI@2
-#   displayName: 'Publish the project - $(buildConfiguration)'
-#   inputs:
-#     command: 'publish'
-#     projects: '**/*.csproj'
-#     publishWebProjects: false
-#     arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
-#     zipAfterPublish: true
+- task: DotNetCoreCLI@2
+  displayName: 'Build the project - $(buildConfiguration)'
+  inputs:
+    command: 'build'
+    arguments: '--no-restore --configuration $(buildConfiguration)'
+    projects: '**/*.csproj'
 
-- template: templates/build.yml
-  parameters:
-    buildConfiguration: 'Debug'
-
-- template: templates/build.yml
-  parameters:
-    buildConfiguration: 'Release'
+- task: DotNetCoreCLI@2
+  displayName: 'Publish the project - $(buildConfiguration)'
+  inputs:
+    command: 'publish'
+    projects: '**/*.csproj'
+    publishWebProjects: false
+    arguments: '--no-build --configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)/$(buildConfiguration)'
+    zipAfterPublish: true
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
   condition: succeeded()
-
-##  Need to add temporary line to see what clash will happen
