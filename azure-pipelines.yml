@@ -22,7 +22,7 @@ steps:
     version: 3.1.300
 
 - task: Npm@1
-  displayNmae: 'Run npm install'
+  displayName: 'Run npm install'
   inputs:
     verbose: false
 
@@ -45,9 +45,9 @@ steps:
 - task: DotNetCOreCLI@2
   displayName: 'Build the project - Release'
   inputs:
-  command: 'build'
-  arguments: '--no-restore --configuration Release'
-  projects: '**/*.csproj'
+    command: 'build'
+    arguments: '--no-restore --configuration Release'
+    projects: '**/*.csproj'
 
 - task: DotNetCoreCLI@2
   displayName: 'Publish the project - Release'
