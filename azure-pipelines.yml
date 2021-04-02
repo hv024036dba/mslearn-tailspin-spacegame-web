@@ -8,8 +8,8 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-  Release: 'Releasetesting'
-  Debug: 'Debugtesting'
+  Release-test: 'Releasetesting'
+  Debug-test: 'Debugtesting'
   wwwrootDir: 'Tailspin.SpaceGame.Web/wwwroot'
   dotnetSdkVersion: '3.1.300'
 
